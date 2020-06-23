@@ -18,34 +18,30 @@ public class PipeGeneration : MonoBehaviour
     {
         if (Game.CurrentState != GameState.Dead && Game.CurrentState != GameState.Paused)
         {
-            List<GameObject> deletionBuffer = new List<GameObject>();
             if (Game.CurrentState == GameState.Running)
             {
                 generationTime -= Time.deltaTime;
 
                 if (generationTime <= 0)
                 {
-                    generationTime = generationDelay;
-                    pipe.transform.position = new Vector2(generationRange, Random.Range(bottomRange, TopRange));
-                    pipes.Add(Instantiate(pipe));
+                    if (pipes.Count < 5)
+                    {
+                        generationTime = generationDelay;
+                        pipe.transform.position = new Vector2(generationRange, Random.Range(bottomRange, TopRange));
+                        pipes.Add(Instantiate(pipe));
+                    }
+                    else
+                    {
+                        generationTime = generationDelay;
+                        pipes[0].transform.position = new Vector2(generationRange, Random.Range(bottomRange, TopRange));
+                        pipes.Add(pipes[0]);
+                        pipes.RemoveAt(0);
+                    }
                 }
 
                 pipes.ForEach(p =>
                 {
-                    if (p.transform.position.x < -generationRange)
-                    {
-                        deletionBuffer.Add(p);
-                    }
-                    else
-                    {
-                        p.transform.position = new Vector2(p.transform.position.x + movementSpeed * Time.deltaTime, p.transform.position.y);
-                    }
-                });
-
-                deletionBuffer.ForEach(p =>
-                {
-                    pipes.Remove(p);
-                    Destroy(p);
+                    p.transform.position = new Vector2(p.transform.position.x + movementSpeed * Time.deltaTime, p.transform.position.y);
                 });
             }
         }
