@@ -26,6 +26,7 @@ public class GameReset : MonoBehaviour
             if (opacity >= 1)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                Game.CurrentScore = 0;
             }
             if (isFadeIn)
             {
