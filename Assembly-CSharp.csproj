@@ -44,8 +44,12 @@
      <Compile Include="Assets\Scripts\GameReset.cs" />
      <Compile Include="Assets\Scripts\GameState.cs" />
      <Compile Include="Assets\Scripts\GetReadyFadeOut.cs" />
+     <Compile Include="Assets\Scripts\JumpArea.cs" />
+     <Compile Include="Assets\Scripts\OkButton.cs" />
+     <Compile Include="Assets\Scripts\PauseButton.cs" />
      <Compile Include="Assets\Scripts\PipeGeneration.cs" />
      <Compile Include="Assets\Scripts\ScoreDisplay.cs" />
+     <Compile Include="Assets\Scripts\Scoreboard.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/prometheus/Unity/2019.4.1f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

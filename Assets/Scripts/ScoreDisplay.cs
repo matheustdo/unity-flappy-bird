@@ -10,17 +10,35 @@ public class ScoreDisplay : MonoBehaviour
     public string value;
     private string lastValue = "";
     private List<GameObject> instantiatedNumbers = new List<GameObject>();
+    public bool visible = true;
+    private bool lastVisible;
+    public bool best = false;
 
     void Start()
     {
-        value = Convert.ToString(Game.CurrentScore);
+        if (best)
+        {
+            value = Convert.ToString(Game.BestScore);
+        }
+        else
+        {
+            value = Convert.ToString(Game.CurrentScore);
+        }
+        lastVisible = !visible;
     }
 
     void Update()
     {
         if (Game.CurrentState != GameState.Menu)
         {
-            value = Convert.ToString(Game.CurrentScore);
+            if (best)
+            {
+                value = Convert.ToString(Game.BestScore);
+            }
+            else
+            {
+                value = Convert.ToString(Game.CurrentScore);
+            }
 
             if (!value.Equals(lastValue))
             {
@@ -63,11 +81,35 @@ public class ScoreDisplay : MonoBehaviour
                     }
 
                     GameObject number = Instantiate(numbers[value.ToCharArray()[i] - '0']);
-                    number.transform.position = new Vector2(xPosition * spacing, 5f);
+                    number.transform.parent = transform;
+                    if (visible)
+                    {
+                        number.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                    }
+                    else
+                    {
+                        number.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                    }
+                    number.transform.localPosition = new Vector2(xPosition * spacing, 0f);
                     instantiatedNumbers.Add(number);
                 }
             }
 
+            if (lastVisible != visible)
+            {
+                instantiatedNumbers.ForEach(number =>
+                {
+                    if (visible)
+                    {
+                        number.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                    }
+                    else
+                    {
+                        number.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                    }
+                });
+            }
+            lastVisible = visible;
             lastValue = value;
         }
     }

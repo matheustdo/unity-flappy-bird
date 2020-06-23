@@ -36,20 +36,7 @@ public class BirdMovement : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            if (Game.CurrentState == GameState.Menu)
-            {
-                Game.CurrentState = GameState.Running;
-                birdRigidBody.isKinematic = false;
-                Jump();
-            }
-            else if (Game.CurrentState == GameState.Dead)
-            {
-                Game.CurrentState = GameState.Menu;
-            }
-            else if (Game.CurrentState == GameState.Running)
-            {
-                Jump();
-            }
+            Jump();
         }
         else if (jumpTime <= 0f && Game.CurrentState == GameState.Running)
         {
@@ -88,11 +75,21 @@ public class BirdMovement : MonoBehaviour
             hitSound.Play(0);
             fallSound.Play(0);
             Game.CurrentState = GameState.Dead;
+            if (Game.CurrentScore > Game.BestScore)
+            {
+                Game.BestScore = Game.CurrentScore;
+                Game.Save();
+            }
         }
     }
 
-    void Jump()
+    public void Jump()
     {
+        if (Game.CurrentState == GameState.Menu)
+        {
+            Game.CurrentState = GameState.Running;
+            birdRigidBody.isKinematic = false;
+        }
         if (Game.CurrentState == GameState.Running)
         {
             birdRigidBody.velocity = new Vector2(0, jumpHeight);
